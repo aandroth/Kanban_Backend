@@ -1,0 +1,31 @@
+// We create a fn, and then use the useState and useEffect methods
+
+function someFn() {
+	const [var, setVar] = useState(init_val);
+	
+	useEffect(() => {
+		document.title = "You got " + var;
+	});
+	
+	return (
+		<div>
+			<button onCLick={() => {setVar(var+1)}}>{var}</button>
+		</div>
+	);
+}
+
+
+
+
+
+import React from 'react';
+
+public class foo extends React.Component {
+	render(){
+		return(
+			<div>
+				//some stuff
+			</div>
+		);
+	}
+}

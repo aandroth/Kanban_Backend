@@ -1,0 +1,76 @@
+// Inside Repo.java
+
+@Entity
+@Table(value="employee")
+public class Employee{
+
+	@Id
+	@Generated(strategy=GenerationType.AUTO)
+	private Long id;
+}
+
+
+// Inside Repo.java
+
+interface EmployeeRepository extends JpaRepository<Employee, Long>{
+
+	Optional <Employee> findById(Long id);
+	
+}
+
+
+// Inside EmployeeController
+
+@RequestMapping(value="/")
+class EmployeeController {
+
+}
+
+// At Controller
+@RequestMapping(value="emp")
+@Controller
+
+@Entity
+@Table(name = "table_name")
+public class entityClass {
+	// Columns and stuff
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

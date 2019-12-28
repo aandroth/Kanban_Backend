@@ -1,0 +1,56 @@
+
+JPA Named Methods
+
+// inside Repo.java
+@Entity
+@Table(name="repo")
+class Repo{
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
+}
+
+
+// inside RepoRepository.java
+@Repository
+public interface RepoRepository extends JpaRepository<Repo, Long> {
+	Optional <Repo> findById(Long id);
+	
+	List <Repo> findByIdGreaterThanEqual(Long value);
+}
+///////////////////////////////////////////////////////////////////////////////////
+
+// In ItemRepo.java
+@Repository
+public interface ItemRepo extends JpaRepository<Item, Long> {
+
+Optional <Item> findById(int id);
+}
+////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
