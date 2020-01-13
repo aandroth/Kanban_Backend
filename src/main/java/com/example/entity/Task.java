@@ -1,5 +1,7 @@
 package com.example.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,13 +33,13 @@ public class Task {
     @Column(name = "taskCriteria")
     private String taskCriteria;
     @Column(name = "taskDueDate")
-    private String taskDueDate;
+    private Date taskDueDate;
     @Column(name = "taskPriority")
     private String taskPriority;
     public Task() {
     }
     public Task(int categoryIdx, String taskTitle, String taskSummary, 
-    		String taskCriteria, String taskDueDate, String taskPriority) {
+    		String taskCriteria, Date taskDueDate, String taskPriority) {
     	this.categoryIdx = categoryIdx;
         this.taskTitle = taskTitle;
         this.taskSummary = taskSummary;
@@ -87,10 +89,10 @@ public class Task {
 	public void setTaskCriteria(String taskCriteria) {
 		this.taskCriteria = taskCriteria;
 	}
-	public String getTaskDueDate() {
+	public Date getTaskDueDate() {
 		return taskDueDate;
 	}
-	public void setTaskDueDate(String taskDueDate) {
+	public void setTaskDueDate(Date taskDueDate) {
 		this.taskDueDate = taskDueDate;
 	}
 	public String getTaskPriority() {

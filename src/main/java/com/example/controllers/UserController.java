@@ -20,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.example.entity.User;
 import com.example.entity.Proj;
 import com.example.dao.UserDao;
+import com.example.dao.TokenDao;
 import com.example.controllers.ProjController;
 @ComponentScan(basePackages = { "com.example.dao"} )
 @Controller
@@ -56,13 +57,13 @@ public class UserController {
 		System.out.println("Returning user "+user);
 		return new ResponseEntity<String>(user.toJson().toString(), HttpStatus.OK);
 	}
+	
 	//Access-Control-Allow-Origin: http://localhost:3000
-	@CrossOrigin(origins="*")
-	@GetMapping(value="loginStatus", produces = {"application/json"})
-	public ResponseEntity<String> getUserLoginStatus(@PathVariable("email") String email) {
-		System.out.println("Checking login status of "+ email);
-		User user = userDAO.getUserByLogin(email, email);
-		System.out.println("Returning user "+user);
+	@CrossOrigin(origins="*", allowedHeaders = "*")
+	@GetMapping(value="loginWithToken/{email}/{token}", produces = {"application/json"})
+	public ResponseEntity<String> getUserFromToken(@PathVariable("email") String email, @PathVariable("token") String token) {
+		System.out.println("Checking user "+ email +" with token "+ token);
+		User user = userDAO.getUserByToken(email, token);
 		return new ResponseEntity<String>(user.toJson().toString(), HttpStatus.OK);
 	}
 

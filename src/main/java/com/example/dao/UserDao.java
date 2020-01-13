@@ -11,11 +11,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.entity.User;
+import com.example.dao.TokenDao;
 import com.example.util.HibernateUtil;
 
 @Repository
 @Transactional
 public class UserDao {
+	
+	private TokenDao tokenDAO = new TokenDao();
+	
     public int saveUser(User user) {
     	
     	// Check if user exists
@@ -58,16 +62,22 @@ public class UserDao {
         }
 	}
 
-	public User getUserByTokenIfLoginStatusIsTrue(String email, String token) {
+	public User getUserByToken(String email, String token) {
+		System.out.println("Inside getUserByToken with email "+email+ ", token "+token);
+		
+    	if(!tokenDAO.getTokenIsValid(token)) {
+    		System.out.println("Token is not valid");
+    		return null;
+    	}
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-    		String hql = "FROM User as user WHERE user.userEmail = '"+email+"' and user.loginStatus is true and user.token = '"+token;
-    		System.out.println("Inside getLoginStatusOfUser");
+    		String hql = "FROM User as user WHERE user.userEmail = '"+email+"'";
     		User user = (User) session.createQuery(hql).getSingleResult();
     		System.out.println("Ran query");
+    		session.close();
 			return user;
         }
         catch(Exception e) {
-    		System.out.println("Not logged in!");
+    		System.out.println("Non-existant user!");
     		e.printStackTrace();
         	return null;
         }

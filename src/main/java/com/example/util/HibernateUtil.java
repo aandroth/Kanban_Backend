@@ -9,6 +9,7 @@ import org.hibernate.service.ServiceRegistry;
 import com.example.entity.User;
 import com.example.entity.Proj;
 import com.example.entity.Task;
+import com.example.entity.Token;
 public class HibernateUtil {
     private static SessionFactory sessionFactory;
     public static SessionFactory getSessionFactory() {
@@ -32,6 +33,7 @@ public class HibernateUtil {
                 configuration.addAnnotatedClass(User.class);
                 configuration.addAnnotatedClass(Proj.class);
                 configuration.addAnnotatedClass(Task.class);
+                configuration.addAnnotatedClass(Token.class);
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties()).build();
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
