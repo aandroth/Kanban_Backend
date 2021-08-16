@@ -33,13 +33,13 @@ public class Task {
     @Column(name = "taskCriteria")
     private String taskCriteria;
     @Column(name = "taskDueDate")
-    private Date taskDueDate;
+    private long taskDueDate;
     @Column(name = "taskPriority")
-    private String taskPriority;
+    private int taskPriority;
     public Task() {
     }
     public Task(int categoryIdx, String taskTitle, String taskSummary, 
-    		String taskCriteria, Date taskDueDate, String taskPriority) {
+    		String taskCriteria, int taskDueDate, int taskPriority) {
     	this.categoryIdx = categoryIdx;
         this.taskTitle = taskTitle;
         this.taskSummary = taskSummary;
@@ -89,16 +89,16 @@ public class Task {
 	public void setTaskCriteria(String taskCriteria) {
 		this.taskCriteria = taskCriteria;
 	}
-	public Date getTaskDueDate() {
+	public long getTaskDueDate() {
 		return taskDueDate;
 	}
-	public void setTaskDueDate(Date taskDueDate) {
-		this.taskDueDate = taskDueDate;
+	public void setTaskDueDate(long i) {
+		this.taskDueDate = i;
 	}
-	public String getTaskPriority() {
+	public int getTaskPriority() {
 		return taskPriority;
 	}
-	public void setTaskPriority(String taskPriority) {
+	public void setTaskPriority(int taskPriority) {
 		this.taskPriority = taskPriority;
 	}
 	@Override

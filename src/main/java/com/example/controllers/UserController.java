@@ -118,7 +118,4 @@ public class UserController {
 		List<User> list = userDAO.getUsers();
 		return new ResponseEntity<List<User>>(list, HttpStatus.OK);
 	}
-	 
-	
-
 }  

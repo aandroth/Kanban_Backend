@@ -99,46 +99,47 @@ public class TaskDao {
         }
 	}	
 
-		public Boolean updateTaskByUserIdAndProjIdAndId(int userId, int projId, int id, Task task) {
-	        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-	    		Task taskFromDb = getTaskByUserIdAndProjIdAndId(userId, projId, id);
-	    		if(taskFromDb == null){
-	        		System.out.println("Task with idx "+task.getId()+" wasn't found");
-	    			return false;
-	    		}
-	    		System.out.println("Updating Task");
-	    		System.out.println("Catagory is "+task.getCategoryIdx());
-	    		taskFromDb.setCategoryIdx(task.getCategoryIdx());
-	    		taskFromDb.setTaskTitle(task.getTaskTitle());
-	    		taskFromDb.setTaskSummary(task.getTaskSummary());
-	    		taskFromDb.setTaskCriteria(task.getTaskCriteria());
-	    		taskFromDb.setTaskDueDate(task.getTaskDueDate());
-	    		taskFromDb.setTaskPriority(task.getTaskPriority());
-	    		session.beginTransaction();
-	            session.saveOrUpdate(taskFromDb);
-	            session.getTransaction().commit();
-	            session.close();
-				return true;
-	        } catch (Exception e) {
-	    		System.out.println("Something went wrong");
-	    		System.out.println(e.getStackTrace());
-	        }
-			return false;
-		}
-
-		public boolean deleteTask(int userId, int projId, int id) {
-	        try (Session session = HibernateUtil.getSessionFactory().openSession()) {    
-	    		Task taskFromDb = getTaskByUserIdAndProjIdAndId(userId, projId, id);
-	    		if(taskFromDb == null){
-	        		System.out.println("Task with userId "+userId+" projId "+projId+" and taskId "+ id +" was not found");
-	    			return false;
-	    		}
-			System.out.println("Deleting Task");
-			session.beginTransaction();
-	        session.remove(taskFromDb);
-	        session.getTransaction().commit();
-	        session.close();
+	public Boolean updateTaskByUserIdAndProjIdAndId(int userId, int projId, int id, Task task) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+    		Task taskFromDb = getTaskByUserIdAndProjIdAndId(userId, projId, id);
+    		if(taskFromDb == null){
+        		System.out.println("Task with idx "+task.getId()+" wasn't found");
+    			return false;
+    		}
+    		System.out.println("Updating Task");
+    		System.out.println("Catagory is "+task.getCategoryIdx());
+    		System.out.println("Due Date is "+task.getTaskDueDate());
+    		taskFromDb.setCategoryIdx(task.getCategoryIdx());
+    		taskFromDb.setTaskTitle(task.getTaskTitle());
+    		taskFromDb.setTaskSummary(task.getTaskSummary());
+    		taskFromDb.setTaskCriteria(task.getTaskCriteria());
+    		taskFromDb.setTaskDueDate(task.getTaskDueDate());
+    		taskFromDb.setTaskPriority(task.getTaskPriority());
+    		session.beginTransaction();
+            session.saveOrUpdate(taskFromDb);
+            session.getTransaction().commit();
+            session.close();
 			return true;
-	        }
+        } catch (Exception e) {
+    		System.out.println("Something went wrong");
+    		System.out.println(e.getStackTrace());
+        }
+		return false;
+	}
+
+	public boolean deleteTask(int userId, int projId, int id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {    
+    		Task taskFromDb = getTaskByUserIdAndProjIdAndId(userId, projId, id);
+    		if(taskFromDb == null){
+        		System.out.println("Task with userId "+userId+" projId "+projId+" and taskId "+ id +" was not found");
+    			return false;
+    		}
+		System.out.println("Deleting Task");
+		session.beginTransaction();
+        session.remove(taskFromDb);
+        session.getTransaction().commit();
+        session.close();
+		return true;
+        }
 	}
 }

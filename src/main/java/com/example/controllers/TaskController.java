@@ -73,6 +73,7 @@ public class TaskController {
 										@PathVariable("id") int id,@RequestBody Task task, UriComponentsBuilder builder) {
 		System.out.println("Attempting to udate task");
 		System.out.println("Title is "+task.getTaskTitle()+", Catagory is "+task.getCategoryIdx());
+		System.out.println("Due date is "+task.getTaskDueDate());
 		boolean result = taskDAO.updateTaskByUserIdAndProjIdAndId(userId, projId, id, task);
 		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
 	}

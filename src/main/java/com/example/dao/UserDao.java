@@ -1,7 +1,13 @@
 package com.example.dao;
 
 import java.util.List;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+
 import javax.transaction.Transactional;
+
+import org.apache.catalina.webresources.FileResource;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.http.HttpStatus;
@@ -26,6 +32,7 @@ public class UserDao {
     	int result = -1;
         //Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        	user.setUserPass(passwordHashed(user.getUserPass()));
             session.save(user);
             result = user.getId();
         } catch (Exception e) {
@@ -48,7 +55,8 @@ public class UserDao {
 
 	public User getUserByLogin(String email, String pass) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-    		String hql = "FROM User as user WHERE user.userEmail = '"+email+"' and user.userPass = '"+pass+"'";
+    		String hql = "FROM User as user WHERE user.userEmail = '"+email+
+    						"' and user.userPass = '"+passwordHashed(pass)+"'";
     		System.out.println("Inside getUserByLogin");
     		@SuppressWarnings("unchecked")
 			User user = (User) session.createQuery(hql).getSingleResult();
@@ -61,7 +69,7 @@ public class UserDao {
         	return null;
         }
 	}
-
+	
 	public User getUserByToken(String email, String token) {
 		System.out.println("Inside getUserByToken with email "+email+ ", token "+token);
 		
@@ -94,7 +102,7 @@ public class UserDao {
     		
     		userFromDb.setUserEmail(user.getUserEmail());
     		userFromDb.setUserName(user.getUserName());
-    		userFromDb.setUserPass(user.getUserPass());
+    		userFromDb.setUserPass(passwordHashed(user.getUserPass()));
     		session.beginTransaction();
             session.saveOrUpdate(userFromDb);
             session.getTransaction().commit();
@@ -128,6 +136,56 @@ public class UserDao {
 		return false;
 	}
 	
+	public String passwordHashed(String pass) {
+
+        String fileName = "PoppyNames.properties";
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(fileName);
+
+		long num0 = 1;
+		long num1 = 1;
+		long mod = 1;
+        
+        try (InputStreamReader streamReader =
+                    new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+             BufferedReader reader = new BufferedReader(streamReader)) {
+        	
+            String line;
+            line = reader.readLine();
+    		num0 = Long.parseUnsignedLong(line);
+            line = reader.readLine();
+    		num1 = Long.parseUnsignedLong(line);
+            line = reader.readLine();
+    		mod = Long.parseUnsignedLong(line);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+        String passAsNumber = "";
+        for (int ii = 0; ii < pass.length() && passAsNumber.length() < 15; ++ii)
+        {
+            passAsNumber = passAsNumber + (int)pass.charAt(ii);
+        }
+        long passLong = Long.parseUnsignedLong(passAsNumber);
+
+        while (passLong < Math.sqrt(num1))
+        {
+            passLong *= passLong;
+        }
+
+        for (int ii = 0; ii < 77 && passLong < Math.sqrt(Long.MAX_VALUE); ++ii)
+        {
+            passLong *= passLong;
+            passLong = passLong % mod;
+        }
+		System.out.println(Long.toString(passLong));
+        return Long.toString(passLong);
+	}
+
+	
 	// Deprecated Fns
 	
     public List <User> getUsers() {
@@ -135,5 +193,4 @@ public class UserDao {
             return session.createQuery("from User", User.class).list();
         }
     }
-	 
 }
